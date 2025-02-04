@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 553616497}
   - component: {fileID: 553616496}
   - component: {fileID: 553616495}
+  - component: {fileID: 553616498}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -332,6 +333,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &553616498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553616494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &753448422
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,11 +406,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a723023b23f74ab4881e01c0aa52ca7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wall: {fileID: 8567537627054628501, guid: c534e7001a7f31045a4bc307699301e1, type: 3}
-  wallWithDoor: {fileID: 5720533158634574019, guid: 4fbc3a0346549414b9aee68eb58c33d8,
+  pillar: {fileID: 3838229020887318422, guid: 605f0c19678de53468eae41d25f41a91, type: 3}
+  wallEntrance: {fileID: 1035824883001820190, guid: 623eb155052855646b5ce6675ecf5aad,
     type: 3}
-  ground: {fileID: 5322126002017439520, guid: e8b6ac0260448364399b699184446a5c, type: 3}
-  ceil: {fileID: 4964012673591428124, guid: a29dc77db62feef4e8cd0d4312e33fd8, type: 3}
+  door: {fileID: 4791477324480071260, guid: 24587b36a3467e54985a2fa2e0b49134, type: 3}
+  floor: {fileID: 3356915533016611925, guid: ec95fe722a8f2d14597c2cdc6830a203, type: 3}
+  lamp: {fileID: 23416346140521137, guid: 4d62ed0374bb7984d874c26ffb8b4a7d, type: 3}
+  wall: {fileID: 8880077722981207199, guid: f15a4bc14b6224f4b9be5f20bc4044a3, type: 3}
+  wallEntranceDoor: {fileID: 7090104424999271314, guid: 9c99fd03ca151fe4ea0cf30dc2d9d8eb,
+    type: 3}
   player: {fileID: 1403340416}
 --- !u!4 &753448424
 Transform:
