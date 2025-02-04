@@ -20,6 +20,8 @@ public class PlayerControl : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
+        transform.rotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
+
         // Kamera yönüne göre hareket vektörü hesapla
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
@@ -32,19 +34,13 @@ public class PlayerControl : MonoBehaviour
         Vector3 moveDirection = (forward * verticalInput + right * horizontalInput).normalized;
 
         // Hareketi uygula
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+        rb.velocity = new Vector3(moveDirection.x * moveSpeed, rb.velocity.y, moveDirection.z * moveSpeed);
 
         // Space tuşu ile zıplama
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
-        }
-
-        // Eğer oyuncu hareket ediyorsa yönünü güncelle
-        if (moveDirection != Vector3.zero)
-        {
-            transform.forward = moveDirection;
         }
     }
 
