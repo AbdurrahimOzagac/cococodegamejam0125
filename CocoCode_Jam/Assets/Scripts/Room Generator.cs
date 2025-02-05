@@ -76,6 +76,7 @@ public class RoomGenerator : MonoBehaviour
         Instantiate(pillar, startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, 0), Quaternion.identity); // start right corner
         Instantiate(pillar, startPositionOfRoom + new Vector3(1 + widthWallNumber * wallWidthSize, 0, 2 + lenghtWallNumber * wallWidthSize), Quaternion.identity); // end right corner
         Instantiate(pillar, startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, -(2 + lenghtWallNumber * wallWidthSize)), Quaternion.identity); // end left corner
+        cornersOfRoom.Clear();
         cornersOfRoom.Add(startPositionOfRoom + new Vector3(1 + widthWallNumber * wallWidthSize, 0, 0));
         cornersOfRoom.Add(startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, 0));
         cornersOfRoom.Add(startPositionOfRoom + new Vector3(1 + widthWallNumber * wallWidthSize, 0, 2 + lenghtWallNumber * wallWidthSize));
@@ -119,5 +120,7 @@ public class RoomGenerator : MonoBehaviour
         Instantiate(floor, exitPosition + new Vector3(-1, 3, 1), Quaternion.identity);
 
     }
+
+
 
 }
