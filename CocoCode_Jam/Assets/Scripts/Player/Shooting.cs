@@ -1,38 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
-    public GameObject projectilePrefab; // Fýrlatýlacak top
-    public Transform firePoint; // Topun çýkýþ noktasý
-    public float shootForce = 10f; // Fýrlatma kuvveti
-    public float gravityScale = 0.5f; // Yerçekimi etkisi
+    public GameObject bulletPrefab; // Mermi prefabý
+    public Transform firePoint; // Merminin çýkýþ noktasý
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Sol týk ile ateþleme
+        if (Input.GetMouseButtonDown(0)) // Sol týk ile ateþ et
         {
-            ShootProjectile();
+            Shoot();
         }
     }
 
-    void ShootProjectile()
+    void Shoot()
     {
-        // Topu oluþtur
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-
-        // Rigidbody bileþenini al
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            // Karakterin ileri yönünde kuvvet uygula
-            rb.AddForce(firePoint.forward * shootForce, ForceMode.Impulse);
-
-            // Yerçekimini azalt
-            rb.useGravity = true;
-            rb.mass *= gravityScale;
-        }
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 }

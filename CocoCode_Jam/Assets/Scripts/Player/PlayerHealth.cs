@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
-    private int currentHealth;
-    public Image healthBar; // UI'daki Health Bar
+    public int currentHealth { get; private set; }  // Dýþarýdan okunabilir ama sadece fonksiyonlarla deðiþtirilebilir
+
+    [SerializeField] private Image healthBar;
 
     void Start()
     {
@@ -15,8 +17,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // 0'ýn altýna inmesini engelle
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
         UpdateHealthUI();
 
         if (currentHealth <= 0)
@@ -25,9 +26,15 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        UpdateHealthUI();
+    }
+
     void UpdateHealthUI()
     {
-        if (healthBar != null)
+        if (healthBar)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
         }
@@ -36,6 +43,6 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player öldü!");
-        // Buraya ölüm ekraný veya respawn ekleyebilirsin.
+        // Ölüm ekraný, sahne resetleme veya oyuncuyu devre dýþý býrakma seçenekleri
     }
 }
