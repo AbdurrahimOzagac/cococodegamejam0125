@@ -32,12 +32,12 @@ public class RoomGenerator : MonoBehaviour
 
     void Start()
     {
-        GenerateRoom(player.gameObject.transform.position + new Vector3(0, 0, -10));
+        GenerateRoom(player.gameObject.transform.position + new Vector3(0, -2, -10));
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             GenerateRoom(player.gameObject.transform.position);
         }
