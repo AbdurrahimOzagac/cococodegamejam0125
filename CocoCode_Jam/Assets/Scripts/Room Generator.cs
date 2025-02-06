@@ -32,7 +32,7 @@ public class RoomGenerator : MonoBehaviour
 
     void Start()
     {
-        GenerateRoom(player.gameObject.transform.position + new Vector3(0, -10, 0));
+        GenerateRoom(player.gameObject.transform.position + new Vector3(0, 0, -10));
     }
 
     void Update()
