@@ -12,15 +12,15 @@ public class Enemy : MonoBehaviour
     public int maxHealth = 30; // Düþmanýn maksimum caný
     private int currentHealth; // Güncel can deðeri
 
-
     private Rigidbody rb;
     private Animator animator;
     private bool isAttacking = false;
+    private int attackIndex = -1; // Baþlangýçta -1
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
 
         currentHealth = maxHealth; // Caný baþlangýçta maksimum yap
     }
@@ -43,19 +43,27 @@ public class Enemy : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
+        if (isAttacking) return; // Saldýrý sýrasýnda hareket etme
+
         Vector3 direction = (player.position - transform.position).normalized;
         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
 
         transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-        //animator.SetBool("isWalking", true);
+
+        animator.SetBool("isWalking", true);
+        animator.SetInteger("AttackIndex", -1); // Saldýrmadýðýnda -1 yap
     }
 
     IEnumerator Attack()
     {
         isAttacking = true;
         rb.velocity = Vector3.zero; // Düþmaný durdur
+        animator.SetBool("isWalking", false);
 
-        //animator.SetTrigger("Attack"); // Saldýrý animasyonunu tetikle
+        // Saldýrý animasyonu için index deðiþtir
+        attackIndex = (attackIndex == 0) ? 1 : 0;
+        animator.SetInteger("AttackIndex", attackIndex);
+        animator.SetTrigger(attackIndex == 0 ? "Attack01" : "Attack02");
 
         yield return new WaitForSeconds(0.4f); // Yumruk çýkana kadar bekle
 
@@ -70,22 +78,20 @@ public class Enemy : MonoBehaviour
 
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
+        attackIndex = -1; // Saldýrý bittiðinde -1 yap
     }
 
     bool PlayerStillInRange()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackDistance))
-        {
-            return hit.collider.CompareTag("Player");
-        }
-        return false;
+        return Vector3.Distance(transform.position, player.position) <= attackRange;
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage; // Caný azalt
-        Debug.Log("Enemy hit! Current HP: " + currentHealth); // Konsola yazdýr (isteðe baðlý)
+        currentHealth -= damage;
+        Debug.Log("Enemy hit! Current HP: " + currentHealth);
+
+        animator.SetTrigger("GetHit");
 
         if (currentHealth <= 0)
         {
@@ -96,7 +102,9 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         Debug.Log("Enemy died!");
-        Destroy(gameObject); // Düþmaný yok et
+        animator.SetTrigger("Die");
+        rb.velocity = Vector3.zero;
+        isAttacking = true;
+        Destroy(gameObject, 2f);
     }
-
 }

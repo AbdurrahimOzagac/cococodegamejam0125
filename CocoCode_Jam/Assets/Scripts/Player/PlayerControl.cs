@@ -17,8 +17,8 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
 
         transform.rotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
 
