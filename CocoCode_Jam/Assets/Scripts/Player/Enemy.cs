@@ -5,7 +5,7 @@ public class Enemy : MonoBehaviour
 {
     public Transform player;
     public float moveSpeed = 3f;
-    public float attackRange = 1.2f;  // Saldýrý için gerekli mesafe
+    public float attackRange = 1.5f;  // Saldýrý için gerekli mesafe
     public float attackDistance = 1.5f; // Raycast mesafesi
     public float attackCooldown = 2f;  // Saldýrý tekrar süresi
 
@@ -15,7 +15,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     private bool isAttacking = false;
-    private int attackIndex = -1; // Baþlangýçta -1
 
     void Start()
     {
@@ -51,7 +50,6 @@ public class Enemy : MonoBehaviour
         transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
 
         animator.SetBool("isWalking", true);
-        animator.SetInteger("AttackIndex", -1); // Saldýrmadýðýnda -1 yap
     }
 
     IEnumerator Attack()
@@ -61,10 +59,7 @@ public class Enemy : MonoBehaviour
         animator.SetBool("isWalking", false);
 
         // Saldýrý animasyonu için index deðiþtir
-        attackIndex = (attackIndex == 0) ? 1 : 0;
-        animator.SetInteger("AttackIndex", attackIndex);
-        animator.SetTrigger(attackIndex == 0 ? "Attack01" : "Attack02");
-
+        animator.SetTrigger("Attack");
         yield return new WaitForSeconds(0.4f); // Yumruk çýkana kadar bekle
 
         if (PlayerStillInRange()) // Oyuncu hâlâ menzildeyse vur
@@ -76,10 +71,11 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(attackCooldown);
+        yield return new WaitForSeconds(attackCooldown + 0.5f); // Attack delay ekle
+
         isAttacking = false;
-        attackIndex = -1; // Saldýrý bittiðinde -1 yap
     }
+
 
     bool PlayerStillInRange()
     {
@@ -104,7 +100,6 @@ public class Enemy : MonoBehaviour
         Debug.Log("Enemy died!");
         animator.SetTrigger("Die");
         rb.velocity = Vector3.zero;
-        isAttacking = true;
         Destroy(gameObject, 2f);
     }
 }
