@@ -33,11 +33,7 @@ public class DoorSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isDoorReadyToOpen)
         {
-            if (currentCoroutine != null)
-            {
-                StopCoroutine(currentCoroutine);
-            }
-            StartCoroutine(ToggleDoor());
+            HandleDoorCoroutines();
         }
     }
 
@@ -53,5 +49,14 @@ public class DoorSystem : MonoBehaviour
         }
 
         transform.rotation = targetRotation;
+    }
+
+    private void HandleDoorCoroutines()
+    {
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        StartCoroutine(ToggleDoor());
     }
 }

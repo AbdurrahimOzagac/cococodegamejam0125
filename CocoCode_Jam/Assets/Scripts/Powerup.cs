@@ -25,4 +25,22 @@ public class Powerup : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Sin(Time.time) * moveUpDownSpeed, transform.position.z);
     }
 
+    public void ApplyPowerup(GameObject powerup)
+    {
+        
+        if (powerUpType == PowerUpType.Health)
+        {
+            // set max health
+        }
+        else if (powerUpType == PowerUpType.Damage)
+        {
+            // set damage
+        }else if (powerUpType == PowerUpType.Poison)
+        {
+            // set poison 
+        }
+
+    }
+
+
 }
