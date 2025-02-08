@@ -5,12 +5,14 @@ public class Enemy : MonoBehaviour
 {
     public Transform player;
     public float moveSpeed = 3f;
-    public float attackRange = 1.5f;  // Saldýrý için gerekli mesafe
-    public float attackDistance = 1.5f; // Raycast mesafesi
-    public float attackCooldown = 2f;  // Saldýrý tekrar süresi
 
-    public int maxHealth = 30; // Düþmanýn maksimum caný
-    private int currentHealth; // Güncel can deðeri
+    public float attackRange = 1.5f;  // SaldÃ½rÃ½ iÃ§in gerekli mesafe
+
+    public float attackDistance = 1.5f; // Raycast mesafesi
+    public float attackCooldown = 2f;  // SaldÃ½rÃ½ tekrar sÃ¼resi
+
+    public int maxHealth = 30; // DÃ¼Ã¾manÃ½n maksimum canÃ½
+    private int currentHealth; // GÃ¼ncel can deÃ°eri
 
     private Rigidbody rb;
     private Animator animator;
@@ -19,9 +21,11 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
         animator = GetComponent<Animator>();
 
-        currentHealth = maxHealth; // Caný baþlangýçta maksimum yap
+
+        currentHealth = maxHealth; // CanÃ½ baÃ¾langÃ½Ã§ta maksimum yap
     }
 
     void Update()
@@ -42,27 +46,32 @@ public class Enemy : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
-        if (isAttacking) return; // Saldýrý sýrasýnda hareket etme
+
+        if (isAttacking) return; // SaldÃ½rÃ½ sÃ½rasÃ½nda hareket etme
 
         Vector3 direction = (player.position - transform.position).normalized;
         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
 
         transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
 
+
         animator.SetBool("isWalking", true);
+
     }
 
     IEnumerator Attack()
     {
         isAttacking = true;
-        rb.velocity = Vector3.zero; // Düþmaný durdur
+        rb.velocity = Vector3.zero; // DÃ¼Ã¾manÃ½ durdur
+
         animator.SetBool("isWalking", false);
 
-        // Saldýrý animasyonu için index deðiþtir
+        // SaldÃ½rÃ½ animasyonu iÃ§in index deÃ°iÃ¾tir
         animator.SetTrigger("Attack");
-        yield return new WaitForSeconds(0.4f); // Yumruk çýkana kadar bekle
 
-        if (PlayerStillInRange()) // Oyuncu hâlâ menzildeyse vur
+        yield return new WaitForSeconds(0.4f); // Yumruk Ã§Ã½kana kadar bekle
+
+        if (PlayerStillInRange()) // Oyuncu hÃ¢lÃ¢ menzildeyse vur
         {
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
             if (playerHealth != null)
@@ -70,6 +79,7 @@ public class Enemy : MonoBehaviour
                 playerHealth.TakeDamage(10);
             }
         }
+
 
         yield return new WaitForSeconds(attackCooldown + 0.5f); // Attack delay ekle
 
@@ -80,21 +90,24 @@ public class Enemy : MonoBehaviour
     bool PlayerStillInRange()
     {
         return Vector3.Distance(transform.position, player.position) <= attackRange;
+
     }
 
     public void TakeDamage(int damage)
     {
+
         currentHealth -= damage;
         Debug.Log("Enemy hit! Current HP: " + currentHealth);
 
         animator.SetTrigger("GetHit");
+
 
         if (currentHealth <= 0)
         {
             Die();
         }
     }
-    
+
 
     void Die()
     {
@@ -103,4 +116,5 @@ public class Enemy : MonoBehaviour
         rb.velocity = Vector3.zero;
         Destroy(gameObject, 2f);
     }
+
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -23,18 +24,20 @@ public class RoomGenerator : MonoBehaviour
     private int height = 10;
     private int wallWidthSize = 2;
 
+    private List<Vector3> cornersOfRoom = new List<Vector3>();
+
     // they are for test. delete after that
     [SerializeField] private GameObject player;
     private bool isGenerateRoom = false;
 
     void Start()
     {
-        
+        GenerateRoom(player.gameObject.transform.position + new Vector3(0, -2, -10));
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             GenerateRoom(player.gameObject.transform.position);
         }
@@ -49,8 +52,9 @@ public class RoomGenerator : MonoBehaviour
         // instantiate doors
         Vector3 startPositionOfRoom = new Vector3(playerPosition.x, playerPosition.y, playerPosition.z + 5);
         Instantiate(wallEntranceDoor, startPositionOfRoom, Quaternion.identity);
-        Instantiate(wallEntranceDoor, startPositionOfRoom + new Vector3(0, 0, 2 + lenghtWallNumber * 2), Quaternion.identity);
+        Instantiate(wallEntranceDoor, startPositionOfRoom + new Vector3(0, 0, 2 + lenghtWallNumber * wallWidthSize), Quaternion.identity);
 
+        
         // instantiate walls on the x axis (width)
         for (int i = -widthWallNumber; i <= widthWallNumber; i++)
         {
@@ -68,10 +72,17 @@ public class RoomGenerator : MonoBehaviour
             }
         }
         // instantiate pillars
-        Instantiate(pillar, startPositionOfRoom + new Vector3(1 + widthWallNumber* wallWidthSize, 0, 0), Quaternion.identity);
-        Instantiate(pillar, startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, 0), Quaternion.identity);
-        Instantiate(pillar, startPositionOfRoom + new Vector3(1 + widthWallNumber * wallWidthSize, 0, 2 + lenghtWallNumber * wallWidthSize), Quaternion.identity);
-        Instantiate(pillar, startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, -(2 + lenghtWallNumber * wallWidthSize)), Quaternion.identity);
+        Instantiate(pillar, startPositionOfRoom + new Vector3(1 + widthWallNumber* wallWidthSize, 0, 0), Quaternion.identity); // start left corner
+        Instantiate(pillar, startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, 0), Quaternion.identity); // start right corner
+        Instantiate(pillar, startPositionOfRoom + new Vector3(1 + widthWallNumber * wallWidthSize, 0, 2 + lenghtWallNumber * wallWidthSize), Quaternion.identity); // end right corner
+        Instantiate(pillar, startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, -(2 + lenghtWallNumber * wallWidthSize)), Quaternion.identity); // end left corner
+        cornersOfRoom.Clear();
+        cornersOfRoom.Add(startPositionOfRoom + new Vector3(1 + widthWallNumber * wallWidthSize, 0, 0));
+        cornersOfRoom.Add(startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, 0));
+        cornersOfRoom.Add(startPositionOfRoom + new Vector3(1 + widthWallNumber * wallWidthSize, 0, 2 + lenghtWallNumber * wallWidthSize));
+        cornersOfRoom.Add(startPositionOfRoom - new Vector3(1 + widthWallNumber * wallWidthSize, 0, -(2 + lenghtWallNumber * wallWidthSize)));
+        
+        
 
         // instantiate walls on the z axis (lenght)
         for (int i = 0; i <= lenghtWallNumber; i++)
@@ -98,7 +109,18 @@ public class RoomGenerator : MonoBehaviour
                 Instantiate(floor, startPositionOfRoom + new Vector3(j * wallWidthSize, 3, 1 + i * wallWidthSize), Quaternion.identity);
             }
         }
-            
+
+        // finall small room to go other room
+        Vector3 exitPosition = startPositionOfRoom + new Vector3(0, 0, 2 + lenghtWallNumber * wallWidthSize);
+        Instantiate(wall, exitPosition + new Vector3(2, 0, 1), Quaternion.Euler(0, 90, 0));
+        Instantiate(wall, exitPosition + new Vector3(-2, 0, 1), Quaternion.Euler(0, 90, 0));
+        Instantiate(floor, exitPosition + new Vector3(1, 0, 1), Quaternion.identity);
+        Instantiate(floor, exitPosition + new Vector3(-1, 0, 1), Quaternion.identity);
+        Instantiate(floor, exitPosition + new Vector3(1, 3, 1), Quaternion.identity);
+        Instantiate(floor, exitPosition + new Vector3(-1, 3, 1), Quaternion.identity);
+
     }
+
+
 
 }

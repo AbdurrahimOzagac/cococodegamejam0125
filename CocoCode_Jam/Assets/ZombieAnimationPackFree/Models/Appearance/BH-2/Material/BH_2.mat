@@ -1,5 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+
 --- !u!114 &-2242351311251221025
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -13,6 +14,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 7
+
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -135,3 +137,4 @@ Material:
     - _EmissionColor: {r: 7.9066987, g: 6.7062054, b: 6.7062054, a: 1}
     - _SpecColor: {r: 0.4245283, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
+

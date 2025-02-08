@@ -5,52 +5,55 @@ using UnityEngine;
 public class CameraShoulder : MonoBehaviour
 {
     [SerializeField] private Transform target;   // Takip edilecek oyuncu (karakterin Transform'u)
-    [SerializeField] private Vector3 offset = new Vector3(2f, 3f, -4f); // Omuz üstü pozisyonu
+    [SerializeField] private Vector3 offset = new Vector3(2f, 3f, -4f); // Omuz Ã¼stÃ¼ pozisyonu
     [SerializeField] private float sensitivity = 3f; // Mouse hassasiyeti
-    [SerializeField] private float minY = -30f, maxY = 60f; // Yukarı/aşağı bakış limitleri
-    [SerializeField] private float collisionOffset = 0.5f; // Çarpışma sonrası uzaklık
+    [SerializeField] private float minY = -30f, maxY = 60f; // YukarÃ½/aÃ¾aÃ°Ã½ bakÃ½Ã¾ limitleri
+
+    [SerializeField] private float collisionOffset = 0.5f; // Ã‡arpÃ½Ã¾ma sonrasÃ½ uzaklÃ½k
+
 
     private float rotationX = 0f;
     private float rotationY = 0f;
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // İmleci ekranda kilitle
+        Cursor.lockState = CursorLockMode.Locked; // Ãmleci ekranda kilitle
     }
 
     void LateUpdate()
     {
         if (!target) return;
 
-        // Mouse girişlerini al
+        // Mouse giriÃ¾lerini al
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
 
-        // X ekseninde karakteri döndür
+        // X ekseninde karakteri dÃ¶ndÃ¼r
         rotationX += mouseX;
 
-        // Y ekseninde kamerayı sınırlar içinde döndür
+        // Y ekseninde kamerayÃ½ sÃ½nÃ½rlar iÃ§inde dÃ¶ndÃ¼r
         rotationY -= mouseY;
         rotationY = Mathf.Clamp(rotationY, minY, maxY);
 
-        // Kamerayı hedefin etrafında döndür
-        Quaternion rotation = Quaternion.Euler(rotationY, rotationX, 0);
+        // KamerayÃ½ hedefin etrafÃ½nda dÃ¶ndÃ¼r
+
         Vector3 desiredPosition = target.position + rotation * offset;
 
-        // Kameranın hedefe doğru raycast atması ve çarpışma olup olmadığını kontrol etmesi
+        // KameranÃ½n hedefe doÃ°ru raycast atmasÃ½ ve Ã§arpÃ½Ã¾ma olup olmadÃ½Ã°Ã½nÃ½ kontrol etmesi
         RaycastHit hit;
         if (Physics.Raycast(target.position, desiredPosition - target.position, out hit, offset.magnitude))
         {
-            // Çarpışma varsa, kamerayı çarpışma noktasına yakın tut ve biraz daha geri çek
+            // Ã‡arpÃ½Ã¾ma varsa, kamerayÃ½ Ã§arpÃ½Ã¾ma noktasÃ½na yakÃ½n tut ve biraz daha geri Ã§ek
             transform.position = hit.point + hit.normal * collisionOffset;
         }
         else
         {
-            // Çarpışma yoksa, normal pozisyona geri dön
+            // Ã‡arpÃ½Ã¾ma yoksa, normal pozisyona geri dÃ¶n
             transform.position = desiredPosition;
         }
 
         // Kamera hedefe odaklanmaya devam et
-        transform.LookAt(target.position + Vector3.up * 1.5f); // Karakterin üstüne odaklan
+        transform.LookAt(target.position + Vector3.up * 1.5f); // Karakterin Ã¼stÃ¼ne odaklan
     }
+
 }

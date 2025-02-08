@@ -20,6 +20,7 @@ public class PlayerControl : MonoBehaviour
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 
+
         transform.rotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
 
         // Kamera yönüne göre hareket vektörü hesapla
